@@ -1,0 +1,22 @@
+// Hunt: repeated sign-in failures by account
+// Question: Which accounts are receiving sustained authentication failures?
+EntraIdSignInEvents
+| where Timestamp > ago(24h)
+| where ErrorCode != 0
+| summarize Failures=count(),
+    SourceIPs=make_set(IPAddress, 20),
+    Countries=make_set(Country, 20)
+    by AccountUpn
+| where Failures >= 5
+| order by Failures desc;
+
+// Hunt: higher-risk successful sign-ins
+// Question: Which successful sign-ins have elevated risk context?
+EntraIdSignInEvents
+| where Timestamp > ago(24h)
+| where ErrorCode == 0
+| where RiskLevelDuringSignIn >= 50 or RiskLevelAggregated >= 50
+| project Timestamp, AccountUpn, IPAddress, Country, Application,
+          RiskLevelDuringSignIn, RiskLevelAggregated, RiskState,
+          IsManaged, IsCompliant
+| order by Timestamp desc;

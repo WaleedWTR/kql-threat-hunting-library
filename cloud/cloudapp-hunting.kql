@@ -1,0 +1,16 @@
+// Hunt: high-volume cloud application actions by account
+CloudAppEvents
+| where Timestamp > ago(24h)
+| summarize Actions=count(),
+    ActionTypes=make_set(ActionType, 25),
+    Applications=make_set(Application, 10)
+    by AccountDisplayName
+| where Actions >= 100
+| order by Actions desc;
+
+// Hunt: actions from unusual IP volume
+CloudAppEvents
+| where Timestamp > ago(24h)
+| summarize Actions=count(), Accounts=dcount(AccountId) by IPAddress
+| where Actions >= 50 or Accounts >= 10
+| order by Actions desc;

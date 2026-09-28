@@ -1,5 +1,7 @@
 # KQL Threat Hunting Library
 
+![KQL library checks](https://github.com/WaleedWTR/kql-threat-hunting-library/actions/workflows/tests.yml/badge.svg)
+
 A curated portfolio library of Microsoft security hunting queries organised by identity, endpoint, email and cloud activity.
 
 > **Portfolio note:** Queries are designed for learning and portfolio demonstration. Table availability depends on connected Microsoft security data sources and licensing.
@@ -45,6 +47,15 @@ Always validate:
 - environmental baseline
 - false-positive rate
 - user/device/application context
+
+## Key documentation
+
+- [Query catalogue](docs/query-catalogue.md)
+- [Tuning guide](docs/tuning-guide.md)
+- [Identity hunting](identity/signin-hunting.kql)
+- [Endpoint hunting](endpoint/powershell-hunting.kql)
+- [Email hunting](email/phishing-hunting.kql)
+- [Technical references](docs/references.md)
 
 ## Skills demonstrated
 

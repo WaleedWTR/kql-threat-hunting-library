@@ -1,0 +1,17 @@
+// Hunt: senders delivering mail to many recipients
+EmailEvents
+| where Timestamp > ago(24h)
+| summarize Messages=count(),
+    Recipients=dcount(RecipientEmailAddress),
+    RecipientList=make_set(RecipientEmailAddress, 20)
+    by SenderFromAddress, SenderIPv4
+| where Messages >= 10 and Recipients >= 5
+| order by Messages desc;
+
+// Hunt: messages with higher-confidence threat classifications
+EmailEvents
+| where Timestamp > ago(24h)
+| where ThreatTypes != ""
+| project Timestamp, NetworkMessageId, SenderFromAddress,
+          RecipientEmailAddress, Subject, ThreatTypes, DeliveryAction
+| order by Timestamp desc;
